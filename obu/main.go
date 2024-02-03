@@ -14,7 +14,7 @@ import (
 var sendInterval = time.Second
 
 // define a websocket endpoint
-const wsEndpoint = "127.0.0.1:30000/ws"
+const wsEndpoint = "ws://127.0.0.1:30000/ws"
 
 // struct defined for GPS data
 type OBUData struct {
@@ -22,8 +22,6 @@ type OBUData struct {
 	Lat   float64 `json:"lat"`
 	Long  float64 `josn:"long"`
 }
-
-// func sendOBUData(data OBUData) error {}
 
 // function to return generated coordinates
 func gentLatLong() (float64, float64) {
@@ -59,6 +57,9 @@ func main() {
 
 			fmt.Printf("%+v\n", data)
 
+			if err := conn.WriteJSON(data); err != nil {
+				log.Fatal(err)
+			}
 		}
 		//sleep for 60 seconds
 		time.Sleep(sendInterval)
