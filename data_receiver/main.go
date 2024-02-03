@@ -27,7 +27,7 @@ func NewDataReceiver() *DataReceiver {
 func main() {
 	recv := NewDataReceiver()
 	http.HandleFunc("/ws", recv.handlerWS) //websocket endpoint
-	http.ListenAndServe(":3000", nil)      //serve the server
+	http.ListenAndServe(":30000", nil)     //serve the server
 }
 
 // this function handles the websocket connection
@@ -56,7 +56,7 @@ func (dr *DataReceiver) wsReceiveLoop() {
 			continue
 		}
 
-		fmt.Printf("received OBU data from [%d] :: <lat %.2f, long $\n", data.OBUID)
+		fmt.Printf("received OBU data from [%d] :: <lat %.2f, long %.2f> \n", data.OBUID, data.Lat, data.Long)
 		//pipe the data into the message channel
 		dr.msgch <- data
 	}
