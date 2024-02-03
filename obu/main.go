@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/gorilla/websocket"
+	"github.com/obynonwane/tolling/types"
 )
 
 // time  interval of every second
@@ -15,13 +16,6 @@ var sendInterval = time.Second
 
 // define a websocket endpoint
 const wsEndpoint = "ws://127.0.0.1:30000/ws"
-
-// struct defined for GPS data
-type OBUData struct {
-	OBUID int     `json:"ubuID"`
-	Lat   float64 `json:"lat"`
-	Long  float64 `josn:"long"`
-}
 
 // function to return generated coordinates
 func gentLatLong() (float64, float64) {
@@ -49,7 +43,7 @@ func main() {
 	for {
 		for i := 0; i < len(obuIDS); i++ {
 			lat, long := gentLatLong()
-			data := OBUData{
+			data := types.OBUData{
 				OBUID: obuIDS[i],
 				Lat:   lat,
 				Long:  long,
