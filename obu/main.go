@@ -2,13 +2,19 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"math"
 	"math/rand"
 	"time"
+
+	"github.com/gorilla/websocket"
 )
 
 // time  interval of every second
 var sendInterval = time.Second
+
+// define a websocket endpoint
+const wsEndpoint = "127.0.0.1:30000/ws"
 
 // struct defined for GPS data
 type OBUData struct {
@@ -16,6 +22,8 @@ type OBUData struct {
 	Lat   float64 `json:"lat"`
 	Long  float64 `josn:"long"`
 }
+
+// func sendOBUData(data OBUData) error {}
 
 // function to return generated coordinates
 func gentLatLong() (float64, float64) {
@@ -33,11 +41,16 @@ func genCoord() float64 {
 }
 func main() {
 	obuIDS := generateOBUIDS(100)
-	lat, long := gentLatLong()
 
+	//initialise websocker using default dialer
+	conn, _, err := websocket.DefaultDialer.Dial(wsEndpoint, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
 	//define an infinite loop
 	for {
 		for i := 0; i < len(obuIDS); i++ {
+			lat, long := gentLatLong()
 			data := OBUData{
 				OBUID: obuIDS[i],
 				Lat:   lat,
