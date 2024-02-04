@@ -1,1 +1,2 @@
-//ws - gorilla webtoolkit
+//ws - gorilla webtoolkit - https://github.com/gorilla/websocket
+//kafka - https://github.com/confluentinc/confluent-kafka-go
